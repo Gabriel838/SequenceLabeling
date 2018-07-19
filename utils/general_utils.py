@@ -79,6 +79,7 @@ def load_glove(file, dim, save_dir=None, dtype=np.float32):
         np.save(save_dir + '/embedding', embedding)
 
     # TODO: add hdf5 supports
+    vocab = {word: i for i, word in enumerate(vocab)}
     return vocab, embedding
 
 

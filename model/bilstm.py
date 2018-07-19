@@ -8,12 +8,12 @@ class LSTMTagger(nn.Module):
     def __init__(self, pretrained_embedding, input_size, hidden_size, num_layers, num_classes):
         super(LSTMTagger, self).__init__()
         self.embedding = nn.Embedding.from_pretrained(pretrained_embedding, freeze=True)    # this counts as nn.Parameters
-        self.bilstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=True)
+        self.bilstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=True, dropout=0.2)
         self.classifer = nn.Linear(2 * hidden_size, num_classes)
 
     def forward(self, sent_words, sent_lens):
         embeds = self.embedding(sent_words)
-        # sort for RNN
+        # sort lengths for RNN
         sorted_lens, sorted_indices = torch.sort(sent_lens, dim=0, descending=True)
         sorted_embeds = torch.index_select(embeds, 0, sorted_indices)
         packed_embeds = pack_padded_sequence(sorted_embeds, sorted_lens, batch_first=True)

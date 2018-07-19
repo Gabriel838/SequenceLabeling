@@ -1,0 +1,11 @@
+# With packed padding versus without packed padding
+
+# Dropout on BiLSTM
+    * no improvements
+
+# Larger embedding
+    * seen improvements, f1-score most over 90% ! best 99%....
+
+# Add CRF layer
+
+# Add char layer
