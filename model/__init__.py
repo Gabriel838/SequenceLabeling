@@ -1,0 +1,2 @@
+
+from .bilstm import LSTMTagger
