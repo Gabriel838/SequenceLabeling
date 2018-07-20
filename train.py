@@ -26,11 +26,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 #----------------------------------------------------
 # training
 #----------------------------------------------------
+# read in train
 get_pos_vocab(conll_train, conll_val, conll_test, output=pos_vocab_file)
 vocab, embedding = load_glove(glove, dim=embed_dim, save_dir='dataset')
 pos_vocab = load_pos_vocab(pos_vocab_file)
 
-# convert to ids
+# convert words to indices for train and test respectively
 words, pos = read_conll(conll_train)
 word_ids = [[vocab.get(word, 1) for word in sentence] for sentence in words]
 pos_ids = [[pos_vocab.get(pos) for pos in sentence] for sentence in pos]
@@ -38,6 +39,7 @@ pos_ids = [[pos_vocab.get(pos) for pos in sentence] for sentence in pos]
 test_words, test_pos = read_conll(conll_test)
 test_word_ids = [[vocab.get(word, 1) for word in sentence] for sentence in words]
 test_pos_ids = [[pos_vocab.get(pos) for pos in sentence] for sentence in pos]
+
 
 embedding = torch.from_numpy(embedding).float()
 model = LSTMTagger(embedding, embed_dim, 100, 2, len(pos_vocab)).to(device)

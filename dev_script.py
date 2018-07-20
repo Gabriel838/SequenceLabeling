@@ -1,15 +1,20 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+import numpy as np
 
-N, C = 5, 4
+conv_filter = [[-0.1,  0.5,  2.2],
+          [ 0.7 , 0.9,  0.3],
+          [-0.2, -0.2,  0.7],
+          [ 1.3, -0.1, -1.1]]
 
-loss = nn.NLLLoss()
-data = torch.randn(5, 4, 8)
-data.requires_grad = True
-target = torch.Tensor(5, 8).random_(0, C).long()
+area1 = [[ 0.4, -0.8,  2.2],
+         [ 0.1,  1.2,  1.5],
+         [ 0.2,  0.1, -1.2],
+         [-0.2, -0.5,  0.1]]
 
-print("target:", target.size())
-output = loss(data, target)
-print("loss:", output)
-output.backward()
+conv_filter = np.array(conv_filter)
+area1 = np.array(area1)
+
+res = conv_filter @ area1.T
+print(np.trace(res))
+
+res = conv_filter * area1
+print(np.sum(res))
