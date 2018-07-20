@@ -29,6 +29,8 @@ class LSTMTagger(nn.Module):
         # classification
         tag_space = self.classifer(lstm_out)
         scores = F.log_softmax(tag_space, dim=2)
+        # nllloss requires to have form of [batch_size, num_classes, d1, d2, ...]
+        # so swap 2nd and 3rd dims
         scores = torch.transpose(scores, 2, 1)
 
         return scores
